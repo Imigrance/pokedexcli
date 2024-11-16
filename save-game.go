@@ -15,8 +15,6 @@ const (
 )
 
 func saveGame(cfg *config) error {
-	//os.WriteFile("save.json", cfg.pokedex, 0666)
-
 	ok := saveExists()
 	if !ok {
 		isFolder := isSaveFolderAvail()
