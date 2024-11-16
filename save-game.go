@@ -9,6 +9,11 @@ import (
 	"github.com/imigrance/pokedexcli/pokedex"
 )
 
+const (
+	SAVE_FOLDER   = "save"
+	SAVE_FILENAME = "save.json"
+)
+
 func saveGame(cfg *config) error {
 	//os.WriteFile("save.json", cfg.pokedex, 0666)
 
@@ -17,7 +22,7 @@ func saveGame(cfg *config) error {
 		isFolder := isSaveFolderAvail()
 		if !isFolder {
 			fmt.Println("Creating save folder!")
-			os.Mkdir("save", os.ModePerm)
+			os.Mkdir(SAVE_FOLDER, os.ModePerm)
 		}
 	}
 
@@ -26,7 +31,7 @@ func saveGame(cfg *config) error {
 		return err
 	}
 
-	os.WriteFile("./save/save.json", data, os.ModePerm)
+	os.WriteFile(SAVE_FOLDER+"/"+SAVE_FILENAME, data, os.ModePerm)
 	return nil
 }
 
@@ -36,7 +41,7 @@ func loadSave(cfg *config) error {
 		return errors.New("no save available")
 	}
 
-	file, err := os.ReadFile("./save/save.json")
+	file, err := os.ReadFile(SAVE_FOLDER + "/" + SAVE_FILENAME)
 	if err != nil {
 		return err
 	}
@@ -51,7 +56,7 @@ func loadSave(cfg *config) error {
 		cfg.pokedex.AddPokemon(pokemon)
 	}
 
-	fmt.Println("Save loaded")
+	fmt.Println(">>> Save loaded <<<")
 	return nil
 }
 
@@ -61,11 +66,11 @@ func saveExists() bool {
 		return false
 	}
 
-	_, err := os.ReadFile("./save/save.json")
+	_, err := os.ReadFile(SAVE_FOLDER + "/" + SAVE_FILENAME)
 	return err == nil
 }
 
 func isSaveFolderAvail() bool {
-	_, err := os.ReadDir("save")
+	_, err := os.ReadDir(SAVE_FOLDER)
 	return err == nil
 }
