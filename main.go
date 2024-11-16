@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"time"
 
 	"github.com/imigrance/pokedexcli/internal/pokeapi"
@@ -17,6 +18,11 @@ func main() {
 	}
 
 	cfg.commands = getCommands()
+
+	err := loadSave(cfg)
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	repl(cfg)
 }

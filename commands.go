@@ -1,18 +1,9 @@
 package main
 
-import (
-	"os"
-)
-
 type CliCommand struct {
 	name        string
 	description string
 	callback    func(*config, ...string) error
-}
-
-func commandExit(cfg *config, args ...string) error {
-	os.Exit(0)
-	return nil
 }
 
 func getCommands() map[string]CliCommand {
