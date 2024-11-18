@@ -93,11 +93,12 @@ func (c *Client) GetPokemon(pokemonName string) (pokedex.Pokemon, error) {
 
 	data, ok := c.cache.Get(url)
 	if ok {
-		respPokemon := pokedex.Pokemon{}
+		respPokemon := pokedex.RespPokemon{}
 		if err := json.Unmarshal(data, &respPokemon); err != nil {
 			return pokedex.Pokemon{}, err
 		}
-		return respPokemon, nil
+		pokemon := pokedex.ConvertRespToPokemon(respPokemon)
+		return pokemon, nil
 	}
 
 	req, err := http.NewRequest("GET", url, nil)
@@ -118,10 +119,12 @@ func (c *Client) GetPokemon(pokemonName string) (pokedex.Pokemon, error) {
 
 	c.cache.Add(url, body)
 
-	respPokemon := pokedex.Pokemon{}
+	respPokemon := pokedex.RespPokemon{}
 	if err := json.Unmarshal(body, &respPokemon); err != nil {
 		return pokedex.Pokemon{}, err
 	}
 
-	return respPokemon, nil
+	pokemon := pokedex.ConvertRespToPokemon(respPokemon)
+
+	return pokemon, nil
 }

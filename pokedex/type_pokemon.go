@@ -1,6 +1,6 @@
 package pokedex
 
-type Pokemon struct {
+type RespPokemon struct {
 	Abilities []struct {
 		Ability struct {
 			Name string `json:"name"`
@@ -269,4 +269,61 @@ type Pokemon struct {
 		} `json:"type"`
 	} `json:"types"`
 	Weight int `json:"weight"`
+}
+
+type Pokemon struct {
+	Abilities              map[string]Ability
+	BaseExperience         int
+	Height                 int
+	HeldItems              map[string]HeldItem
+	ID                     int
+	IsDefault              bool
+	LocationAreaEncounters string
+	Moves                  map[string]PokeMove
+	Name                   string
+	Order                  int
+	PastAbilities          []interface{}
+	PastTypes              []interface{}
+	Species                struct {
+		Name string
+		URL  string
+	}
+	Stats  map[string]PokeStats
+	Types  map[string]PokeType
+	Weight int
+}
+
+type Ability struct {
+	Name     string
+	URL      string
+	IsHidden bool
+	Slot     int
+}
+
+type HeldItem struct {
+	Name string
+	URL  string
+}
+
+type PokeMove struct {
+	Name            string
+	URL             string
+	LevelLearnedAt  int
+	MoveLearnMethod struct {
+		Name string
+		URL  string
+	}
+}
+
+type PokeStats struct {
+	BaseStat int
+	Effort   int
+	Name     string
+	URL      string
+}
+
+type PokeType struct {
+	Slot int
+	Type string
+	URL  string
 }

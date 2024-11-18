@@ -34,18 +34,15 @@ func repl(cfg *config) {
 		}
 
 		if command, exists := cfg.commands[cmdName]; exists {
-
 			err := command.callback(cfg, args...)
 			if err != nil {
 				fmt.Printf("Error: %v\n", err)
 			}
-
 			continue
 		} else {
 			fmt.Println("command not found, try 'Help'")
 			continue
 		}
-
 	}
 }
 
