@@ -128,3 +128,43 @@ func (c *Client) GetPokemon(pokemonName string) (pokedex.Pokemon, error) {
 
 	return pokemon, nil
 }
+
+func (c *Client) GetMove(url string) (pokedex.PokeMove, error) {
+
+	data, ok := c.cache.Get(url)
+	if ok {
+		respPokeMove := RespPokeMove{}
+		if err := json.Unmarshal(data, &respPokeMove); err != nil {
+			return pokedex.PokeMove{}, err
+		}
+		pokeMove := ConvertRespToPokeMove(respPokeMove)
+		return pokeMove, nil
+	}
+
+	req, err := http.NewRequest("GET", url, nil)
+	if err != nil {
+		return pokedex.PokeMove{}, err
+	}
+
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return pokedex.PokeMove{}, err
+	}
+	defer resp.Body.Close()
+
+	body, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return pokedex.PokeMove{}, err
+	}
+
+	c.cache.Add(url, body)
+
+	respPokeMove := RespPokeMove{}
+	if err := json.Unmarshal(body, &respPokeMove); err != nil {
+		return pokedex.PokeMove{}, err
+	}
+
+	pokeMove := ConvertRespToPokeMove(respPokeMove)
+
+	return pokeMove, nil
+}

@@ -21,6 +21,21 @@ func commandCatch(cfg *config, args ...string) error {
 		return err
 	}
 
+	// Add known moves
+	move_count := 0
+	for _, move := range pokemon.Moves {
+		if move_count > 3 {
+			break
+		}
+		if move.LevelLearnedAt == 1 {
+			pokemon.LearnedMoves[move.Name], err = cfg.pokeapiClient.GetMove(move.URL)
+			if err != nil {
+				return err
+			}
+			move_count++
+		}
+	}
+
 	fmt.Printf("Throwing a pokeball at %v...\n", args[0])
 
 	rnd := rand.Intn(pokemon.BaseExperience)

@@ -274,12 +274,13 @@ type RespPokemon struct {
 type Pokemon struct {
 	Abilities              map[string]Ability
 	BaseExperience         int
+	LearnedMoves           map[string]PokeMove
 	Height                 int
 	HeldItems              map[string]HeldItem
 	ID                     int
 	IsDefault              bool
 	LocationAreaEncounters string
-	Moves                  map[string]PokeMove
+	Moves                  map[string]Moves
 	Name                   string
 	Order                  int
 	PastAbilities          []interface{}
@@ -305,11 +306,63 @@ type HeldItem struct {
 	URL  string
 }
 
-type PokeMove struct {
+type MoveEffect struct {
+	Effect      string
+	ShortEffect string
+}
+
+type Moves struct {
 	Name            string
 	URL             string
 	LevelLearnedAt  int
 	MoveLearnMethod struct {
+		Name string
+		URL  string
+	}
+}
+
+type PokeMove struct {
+	Accuracy    int
+	DamageClass struct {
+		Name string
+		URL  string
+	}
+	EffectChance  int
+	EffectChanges []interface{}
+	EffectEntries map[string]MoveEffect
+	FlavorText    string
+	ID            int
+	Meta          struct {
+		Ailment struct {
+			Name string
+			URL  string
+		}
+		AilmentChance int
+		Category      struct {
+			Name string
+			URL  string
+		}
+		CritRate     int
+		Drain        int
+		FlinchChance int
+		Healing      int
+		MaxHits      interface{}
+		MaxTurns     interface{}
+		MinHits      interface{}
+		MinTurns     interface{}
+		StatChance   int
+	}
+	Name        string
+	PastValues  []interface{}
+	Power       int
+	Pp          int
+	Priority    int
+	StatChanges []interface{}
+	Target      struct {
+		Name string
+		URL  string
+	}
+	Type struct {
 		Name string
 		URL  string
 	}

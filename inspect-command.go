@@ -13,7 +13,11 @@ func commandInspect(cfg *config, args ...string) error {
 	}
 
 	fmt.Println()
-	fmt.Printf("Name: %v\nWeight: %v \nHeight: %v\n", pokemon.Name, pokemon.Weight, pokemon.Height)
+	fmt.Printf("ID: %d\nName: %v\nWeight: %v \nHeight: %v\n", pokemon.ID, pokemon.Name, pokemon.Weight, pokemon.Height)
+	fmt.Println("Moves:")
+	for _, move := range pokemon.LearnedMoves {
+		fmt.Printf("  -%v | Pp: %v\n", move.Name, move.Pp)
+	}
 	fmt.Println("Stats:")
 	for _, stat := range pokemon.Stats {
 		fmt.Printf("  -%v: %v\n", stat.Name, stat.BaseStat)

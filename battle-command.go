@@ -3,14 +3,9 @@ package main
 import (
 	"fmt"
 
+	"github.com/imigrance/pokedexcli/battle"
 	"github.com/imigrance/pokedexcli/pokedex"
 )
-
-type Battle struct {
-	playerPokemon *pokedex.Pokemon
-	enemyPokemon  *pokedex.Pokemon
-	turn          *pokedex.Pokemon
-}
 
 func commandBattle(cfg *config, args ...string) error {
 	if len(args) != 2 {
@@ -24,39 +19,35 @@ func commandBattle(cfg *config, args ...string) error {
 	}
 
 	enemy := args[1]
-	enemyP, err := cfg.pokeapiClient.GetPokemon(enemy)
+	enemyP, err := initEnemy(cfg, enemy)
 	if err != nil {
 		return err
 	}
 
-	var starts *pokedex.Pokemon
-	if err := getStarter(&playerP, &enemyP, starts); err != nil {
-		return err
-	}
-
-	battle := Battle{
-		playerPokemon: &playerP,
-		enemyPokemon:  &enemyP,
-		turn:          starts,
-	}
-	battle.startBattle()
+	battle := battle.NewBattle(&playerP, &enemyP)
+	battle.StartBattle()
 
 	return nil
 }
 
-func getStarter(player, enemy, starts *pokedex.Pokemon) error {
-	if player.Stats["speed"].BaseStat > enemy.Stats["speed"].BaseStat {
-		starts = player
-	} else {
-		starts = enemy
+func initEnemy(cfg *config, pokemon string) (pokedex.Pokemon, error) {
+	enemyPokemon, err := cfg.pokeapiClient.GetPokemon(pokemon)
+	if err != nil {
+		return pokedex.Pokemon{}, err
 	}
 
-	return nil
-}
-
-func (b *Battle) startBattle() {
-	for {
-		fmt.Printf("Your %v's hp: ", b.playerPokemon.Name)
-		return
+	move_count := 0
+	for _, move := range enemyPokemon.Moves {
+		if move_count > 3 {
+			break
+		}
+		if move.LevelLearnedAt == 1 {
+			enemyPokemon.LearnedMoves[move.Name], err = cfg.pokeapiClient.GetMove(move.URL)
+			if err != nil {
+				return pokedex.Pokemon{}, err
+			}
+			move_count++
+		}
 	}
+	return enemyPokemon, err
 }

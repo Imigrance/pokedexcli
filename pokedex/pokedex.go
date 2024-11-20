@@ -28,3 +28,7 @@ func (p *Pokedex) GetPokemon(pokemon string) (Pokemon, bool) {
 func (p *Pokedex) GetAllPokemon() map[string]Pokemon {
 	return p.pokemons
 }
+
+func (p *Pokedex) initMoves(pokemon *Pokemon, moves []PokeMove) {
+
+}

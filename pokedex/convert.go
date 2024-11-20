@@ -9,8 +9,9 @@ func ConvertRespToPokemon(response RespPokemon) Pokemon {
 	pokemon.HeldItems = map[string]HeldItem{}
 	pokemon.ID = response.ID
 	pokemon.IsDefault = response.IsDefault
+	pokemon.LearnedMoves = map[string]PokeMove{}
 	pokemon.LocationAreaEncounters = response.LocationAreaEncounters
-	pokemon.Moves = map[string]PokeMove{}
+	pokemon.Moves = map[string]Moves{}
 	pokemon.Name = response.Name
 	pokemon.Order = response.Order
 	pokemon.PastAbilities = response.PastAbilities
@@ -40,7 +41,7 @@ func ConvertRespToPokemon(response RespPokemon) Pokemon {
 	}
 
 	for _, m := range response.Moves {
-		move := PokeMove{}
+		move := Moves{}
 		move.Name = m.Move.Name
 		move.URL = m.Move.URL
 
