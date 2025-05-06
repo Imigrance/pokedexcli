@@ -24,8 +24,7 @@ func commandBattle(cfg *config, args ...string) error {
 		return err
 	}
 
-	battle := battle.NewBattle(&playerP, &enemyP)
-	battle.StartBattle()
+	battle.NewBattle(&playerP, &enemyP)
 
 	return nil
 }

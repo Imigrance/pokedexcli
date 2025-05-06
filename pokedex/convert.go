@@ -9,9 +9,10 @@ func ConvertRespToPokemon(response RespPokemon) Pokemon {
 	pokemon.HeldItems = map[string]HeldItem{}
 	pokemon.ID = response.ID
 	pokemon.IsDefault = response.IsDefault
+	pokemon.Level = 5
 	pokemon.LearnedMoves = map[string]PokeMove{}
 	pokemon.LocationAreaEncounters = response.LocationAreaEncounters
-	pokemon.Moves = map[string]Moves{}
+	pokemon.Moves = map[string]Move{}
 	pokemon.Name = response.Name
 	pokemon.Order = response.Order
 	pokemon.PastAbilities = response.PastAbilities
@@ -41,7 +42,7 @@ func ConvertRespToPokemon(response RespPokemon) Pokemon {
 	}
 
 	for _, m := range response.Moves {
-		move := Moves{}
+		move := Move{}
 		move.Name = m.Move.Name
 		move.URL = m.Move.URL
 
@@ -65,6 +66,13 @@ func ConvertRespToPokemon(response RespPokemon) Pokemon {
 			Name:     s.Stat.Name,
 			URL:      s.Stat.URL,
 		}
+	}
+
+	pokemon.Stats["maxhp"] = PokeStats{
+		BaseStat: pokemon.Stats["hp"].BaseStat,
+		Effort:   pokemon.Stats["hp"].Effort,
+		Name:     "Max HP",
+		URL:      pokemon.Stats["hp"].URL,
 	}
 
 	for _, t := range response.Types {

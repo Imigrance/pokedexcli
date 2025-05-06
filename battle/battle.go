@@ -5,14 +5,28 @@ import (
 )
 
 type Battle struct {
-	playerPokemon *pokedex.Pokemon
-	enemyPokemon  *pokedex.Pokemon
-	attacking     *pokedex.Pokemon
+	battleType  string
+	pokemons    map[string]*pokedex.Pokemon
+	attackOrder []string
+	attacking   string
+	target      *pokedex.Pokemon
 }
 
-func NewBattle(player, enemy *pokedex.Pokemon) Battle {
-	return Battle{
-		playerPokemon: player,
-		enemyPokemon:  enemy,
+func NewBattle(player, enemy *pokedex.Pokemon) {
+
+	pokes := map[string]*pokedex.Pokemon{}
+	pokes["player"] = player
+	pokes["enemy1"] = enemy
+
+	newBattle := Battle{
+		pokemons:    pokes,
+		attackOrder: []string{},
 	}
+
+	bcfg := battleConfig{
+		battle:     &newBattle,
+		battleling: true,
+	}
+
+	newBattle.StartBattle(&bcfg)
 }

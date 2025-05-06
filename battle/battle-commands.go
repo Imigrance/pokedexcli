@@ -8,25 +8,25 @@ type battleCommand struct {
 
 func getBattleCommands() map[string]battleCommand {
 	return map[string]battleCommand{
-		"attack": {
-			name:        "attack",
-			description: "Attack with move",
-			callback:    battleCommandAttack,
+		"use-move": {
+			name:        "use-move",
+			description: "Use a move to attack the other pokemon or buff your own",
+			callback:    battleCommandUseMove,
 		},
-		"use-item": {
+		/*"use-item": {
 			name:        "use-item",
 			description: "Use an item in battle",
 			callback:    battleCommandUseItem,
 		},
-		"flee": {
+		*/"flee": {
 			name:        "flee",
 			description: "Tries to flee from current battle",
-			callback:    batteCommandFlee,
+			callback:    battleCommandFlee,
 		},
-		"switch": {
+		/*"switch": {
 			name:        "switch",
 			description: "Switches to another Pokemon",
 			callback:    battleCommandSwitch,
-		},
+		},*/
 	}
 }

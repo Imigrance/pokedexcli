@@ -2,7 +2,7 @@ package pokeapi
 
 import "github.com/imigrance/pokedexcli/pokedex"
 
-func ConvertRespToPokeMove(resp RespPokeMove) pokedex.PokeMove {
+func ConvertRespToPokeMove(resp RespPokeMove, respTarget RespMoveTarget) pokedex.PokeMove {
 	pokeMove := pokedex.PokeMove{}
 
 	pokeMove.Accuracy = resp.Accuracy
@@ -38,12 +38,13 @@ func ConvertRespToPokeMove(resp RespPokeMove) pokedex.PokeMove {
 	pokeMove.PastValues = resp.PastValues
 	pokeMove.Power = resp.Power
 	pokeMove.Pp = resp.Pp
+	pokeMove.PpMax = resp.Pp
 	pokeMove.Priority = resp.Priority
 	pokeMove.StatChanges = resp.StatChanges
-	pokeMove.Target = struct {
-		Name string
-		URL  string
-	}(resp.Target)
+	pokeMove.Target = pokedex.MoveTarget{
+		ID:   respTarget.ID,
+		Name: respTarget.Name,
+	}
 	pokeMove.Type = struct {
 		Name string
 		URL  string

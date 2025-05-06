@@ -272,15 +272,20 @@ type RespPokemon struct {
 }
 
 type Pokemon struct {
-	Abilities              map[string]Ability
-	BaseExperience         int
-	LearnedMoves           map[string]PokeMove
+	Abilities      map[string]Ability
+	BaseExperience int
+	Battling       struct {
+		UseMove PokeMove
+		Target  []*Pokemon
+	}
 	Height                 int
 	HeldItems              map[string]HeldItem
 	ID                     int
 	IsDefault              bool
+	LearnedMoves           map[string]PokeMove
+	Level                  int
 	LocationAreaEncounters string
-	Moves                  map[string]Moves
+	Moves                  map[string]Move
 	Name                   string
 	Order                  int
 	PastAbilities          []interface{}
@@ -311,7 +316,7 @@ type MoveEffect struct {
 	ShortEffect string
 }
 
-type Moves struct {
+type Move struct {
 	Name            string
 	URL             string
 	LevelLearnedAt  int
@@ -356,17 +361,25 @@ type PokeMove struct {
 	PastValues  []interface{}
 	Power       int
 	Pp          int
+	PpMax       int
 	Priority    int
 	StatChanges []interface{}
-	Target      struct {
-		Name string
-		URL  string
-	}
-	Type struct {
+	Target      MoveTarget
+	Type        struct {
 		Name string
 		URL  string
 	}
 }
+
+/*
+Stats:
+	defense
+	hp
+	special-attack
+	special-defense
+	speed
+	attack
+*/
 
 type PokeStats struct {
 	BaseStat int
@@ -379,4 +392,9 @@ type PokeType struct {
 	Slot int
 	Type string
 	URL  string
+}
+
+type MoveTarget struct {
+	ID   int
+	Name string
 }
